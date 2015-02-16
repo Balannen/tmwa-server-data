@@ -1,60 +1,733 @@
 // Council of Ruling Wizards Room
+//
+// Variables:
+//  $@DragonEggQuestState - global variable storing quest states
+//  $@DragonEggQuestParty - global variable storing ID of the party which is solving the quest
+//
+// Dragon egg quest states:
+// 1. quest not given yet: $@DragonEggQuestState is 0
+// 2. quest given, not solved: $@DragonEggQuestState is 1
+// 3. egg acquired, no potion: $@DragonEggQuestState is 2
+// 4. potion acquired, no egg: $@DragonEggQuestState is 3
+// 5. both egg and potion acquired, dragon not hatched: $@DragonEggQuestState is 4
+// 6. waiting for the dragon to hatch: $@DragonEggQuestState is 5
+// 7. dragon hatched, spell not learned: $@DragonEggQuestState is 6
+// 8. quest solved: $@DragonEggQuestState is 7
+//
 
 // manaseed
-001-2,104,19,0|script|Desert Mana Seed#_M|166
+001-2.gat,104,19,0|script|Desert Mana Seed#_M|166
 {
-    end;
+    mes "(almost inaudible voice is coming from the stone, although nobody seems to notice it)";
+    next;
+    mes "[Desert Mana Seed]";
+    mes "\"" + strcharinfo(0) + " of " + strcharinfo(1) + " I can see your future bright with flame.\"";
+    close;
 }
 
 // 
-001-2,99,22,0|script|Wizard#1|355
+001-2.gat,99,22,0|script|Yellow Wizard#1|355
 {
-    end;
+    if ( $@DragonEggQuestState == 7 ) goto L_QuestDone;
+
+    mes "Dragon eggs are really hard to transport";
+    mes "since they break easily, I heard you";
+    mes "need three people skilled in war, ";
+    mes "archery and magic to always be around."; 
+    goto L_Close;
+
+    L_QuestDone:
+        mes "Did you know you can summon guild";
+        mes "pets in battle?";
+        goto L_Close;
+
+    L_Close:
+        close;
 }
 
 //
-001-2,92,24,0|script|Wizard#2|356
+001-2.gat,92,24,0|script|Orange Wizard#2|356
 {
-    end;
+    if ( $@DragonEggQuestState == 7 ) goto L_QuestDone;
+
+    mes "I heard that there have been dragons ";
+    mes "sighted in ... (pointing to dragon nests)";
+    goto L_Close;
+
+    L_QuestDone:
+        mes "Well done, you did a very good job!";
+        goto L_Close;
+
+    L_Close:
+        close;
 }
 
 //
-001-2,92,30,0|script|Wizard#3|357
+001-2.gat,92,30,0|script|Green Wizard#3|357
 {
-    end;
+    if ( $@DragonEggQuestState == 7 ) goto L_QuestDone;
+
+    mes "[Green Wizard]";
+    mes "\"Whenever I need potions I go to a witch, they mix the finest of all.\"";
+    goto L_Close;
+
+    L_QuestDone:
+        mes "[Green Wizard]";
+        mes "\"You really did hatch that dragon, I can't believe it!\"";
+        goto L_Close;
+
+    L_Close:
+        close;
 }
 
 //
-001-2,99,32,0|script|Wizard#4|358
+001-2.gat,99,32,0|script|Purple Wizard#4|358
 {
-    end;
+    if ( $@DragonEggQuestState == 7 ) goto L_QuestDone;
+
+    mes "I heard that there have been dragons ";
+    mes "sighted in ... (pointing to dragon nests)";
+    goto L_Close;
+
+    L_QuestDone:
+        mes "You really did hatch that dragon, I can't";
+        mes "believe it!";
+        goto L_Close;
+
+    L_Close:
+        close;
 }
 
 //
-001-2,110,22,0|script|Wizard#5|359
+001-2.gat,110,22,0|script|Pink Wizard#5|359
 {
-    end;
+    if ( $@DragonEggQuestState == 7 ) goto L_QuestDone;
+
+    mes "I heard that there have been dragons ";
+    mes "sighted in ... (pointing to dragon nests)";
+    goto L_Close;
+
+    L_QuestDone:
+        mes "I wish I had some hatching potion left,";
+        mes "guilds pay lots of gold for them on the";
+        mes "market";   
+        goto L_Close;
+
+    L_Close:
+        close;
 }
 
 //
-001-2,117,24,0|script|Wizard#6|360
+001-2.gat,117,24,0|script|Black Wizard#6|360
 {
-    end;
+    if ( $@DragonEggQuestState == 7 ) goto L_QuestDone;
+
+    mes "Dragons are quite picky while laying";
+    mes "their eggs, they never lay eggs in the";
+    mes "same nest twice.";
+    goto L_Close;
+
+    L_QuestDone:
+        mes "I heard dragons are fierce in battle";
+        mes "when protecting their masters.";
+        goto L_Close;
+
+    L_Close:
+        close;
 }
 
 //
-001-2,117,30,0|script|Wizard#7|361
+001-2.gat,117,30,0|script|White Wizard#7|361
 {
-    end;
+    if ( $@DragonEggQuestState == 7 ) goto L_QuestDone;
+
+    mes "I heard that there have been dragons ";
+    mes "sighted in ... (pointing to dragon nests)";
+    goto L_Close;
+
+    L_QuestDone:
+        mes "This dragon on the roof is really";
+        mes "upsetting me. Can't you just take ";
+        mes "it with you?";
+        goto L_Close;
+
+    L_Close:
+    close;
+}
+
+//Script for potion dealing - will be added to another NPC (i.e. Pauline the Witch)
+001-2.gat,97,40,0|script|Potion Dealer Wizard#2|356
+{
+    if ($@DragonEggQuestState == 0 || $@DragonEggQuestParty != getcharid(1)) goto L_NoQuest;
+    mes "[Potion Dealer]";
+    mes "\"Do you wish me to create a hatching potion? All it takes is one Snake Egg.\"";
+    menu
+        "Yes.", L_Potion,
+        "No.", L_End;
+
+    L_NoQuest:
+        mes "[Potion Dealer]";
+        mes "\"I see you wish for something child. You are at the right place, but in wrong time.\"";
+        goto L_End;
+
+    L_Potion:
+        if (countitem("SnakeEgg") < 1) goto L_NoPotion;
+        delitem "SnakeEgg", 1;
+        getitem 6606, 1;
+        mes "\"Brand new hatching potion for you!\"";
+        goto L_End;
+
+    L_NoPotion:
+        mes "\"No potion for you!\"";
+        goto L_End;
+
+    L_End:
+        close;
 }
 
 //
-001-2,110,32,0|script|Wizard#8|362
+001-2.gat,112,40,0|script|Central Egg Authority|358
 {
-    end;
+    //for testing purposes
+    mes "Interval: " + $@HatcheryInterval;
+    mes "Laid Day: " + $@DragonEggLaidDay;
+    mes "Laid Hour: " + $@DragonEggLaidHour;
+    mes "Hatchery: " + $@location;
+    mes "Pickup Day: " + DragonEggPickupDay;
+    mes "Pickup Hour: " + DragonEggPickupHour;
+    mes "";
+    mes "Group: " + getcharid(1);
+    close;
+
+    //Interval dependent on the random value of $@HatcheryInterval variable, run on 20000, 30000 or 40000 ms
+    OnTimer20000:
+        if ( $@HatcheryInterval == 0) goto L_LayEgg;
+        end;
+    OnTimer30000:
+        if ( $@HatcheryInterval == 1) goto L_LayEgg;
+        end;
+    OnTimer40000:
+        if ( $@HatcheryInterval == 2) goto L_LayEgg;
+        end;
+
+    //the time for a new egg has come
+    L_LayEgg:
+
+        //choose location on random
+        set $@location, rand(3);
+
+        //disable all egg giving NPCs, so there would be no two of the kind
+        disablenpc "North Egg Collector";
+        disablenpc "East Egg Collector";
+        disablenpc "West Egg Collector";
+        //disablenpc "South Egg Collector"; - placeholder
+
+        //enable egg giving NPC accorgding to the value of $@location variable
+        //the NPC will spawn at the random location within the given area
+
+        //third area - from 109,38 to 119,51 - map "001-2.gat" - East
+        //first area - from 98,23 to 111,30 - map "001-2.gat" - North
+        //second area - from 90,38 to 100,51 - map "001-2.gat" - West
+
+        if ($@location == 0) npcareawarp 109, 38, 119, 51, 0, "East Egg Collector";
+        if ($@location == 1) npcareawarp 98, 23, 111, 30, 0, "North Egg Collector";
+        if ($@location == 2) npcareawarp 90, 38, 100, 51, 0, "West Egg Collector";
+        if ($@location == 3) set $@EggNPC$, "South Egg Collector"; //placeholder for South, must change $@location rand first!!
+
+        //the NPC can give an egg
+        set $@CanGiveDragonEgg, 1;
+
+        //announce the new egg
+        npctalk "New Egg is out there! " + 
+            gettime(2) + ":" + gettime(1);
+        
+        //store egg hatching time, i.e. time of new NPC warp
+        set $@DragonEggLaidDay, gettime(2);
+        set $@DragonEggLaidHour, gettime(1);
+        
+        //set state of the quest as not started yet
+        set $@DragonEggQuestState, 0;
+
+        //generate new value for the time interval before a new egg has come
+        set $@HatcheryInterval, rand(3);
+
+        //reset timer
+        setnpctimer 0;
+        end;
+
+    //on initialization of the server
+    OnInit:
+        //initialize and start timer from 0
+        initnpctimer;
+
+        //get interval value
+        set $@HatcheryInterval, rand(3);
+
+        //disable all egg giving NPCs
+        disablenpc "North Egg Collector";
+        disablenpc "East Egg Collector";
+        disablenpc "West Egg Collector";
+        //disablenpc "South Egg Collector"; - placeholder
+
+        end;
 }
+
 //
-001-2,104,27,0|script|Arch-Wizard#9|354
+001-2.gat,112,46,0|script|North Egg Collector|358
 {
-    end;
+    //if quest is not yet initialized OR player is not part of the questing party, decline the player
+    if ($@DragonEggQuestState == 0 || $@DragonEggQuestParty != getcharid(1)) goto L_NoQuest;
+        
+    mes "[Strange Person]";
+    mes "\"Take it! Take it!!\"";
+
+    //check if Player has the egg already, if YES, delete it from their inventory
+    if (countitem(6006) >= 1) goto L_DeleteDragonEgg;
+
+    //if Player has no egg, and the NPC can give the egg, do it
+    if (countitem(6006) < 1 && $@CanGiveDragonEgg == 1) goto L_GetDragonEgg;
+    close;
+
+    L_NoQuest:
+        mes "[Strange Person]";
+        mes "\"You're not the right one!! Begone!\"";
+        
+        //warp player to random location
+        warp "Random", 50, 50;
+
+        close;
+
+    L_DeleteDragonEgg:
+        //delete one egg from inventory
+        delitem 6006, 1;
+
+        //if there are more eggs, repeat
+        if (countitem(6006) >= 1) goto L_DeleteDragonEgg;
+
+        //if the NPC can give out eggs, do it
+        if ( $@CanGiveDragonEgg == 1) goto L_GetDragonEgg;
+        close;
+
+    L_GetDragonEgg:
+        //give one egg
+        getitem 6006, 1;
+
+        //NPC cannot give any more
+        set $@CanGiveDragonEgg, 0;
+
+        //memorise time when Player got the egg
+        //this is variable unique to every Player - if one player picks up the egg, and gives it to the other player, it will not work
+        set DragonEggPickupDay, gettime(2);
+        set DragonEggPickupHour, gettime(1);
+        
+        //for testing purposes
+        mes "Timing: " + DragonEggPickupDay;
+
+        //special effect before vanishing
+        specialeffect FX_MAGIC_BLUE_TELEPORT;
+
+        //restart NPC timer from 0
+        initnpctimer;
+        close;
+
+    //after 100 ms disable this NPC, so nobody could get to it again, before being enabled by the central Egg Authority
+    OnTimer100:
+        disablenpc "North Egg Collector";
+        end;
+}
+
+//same as North Egg Collector 
+001-2.gat,112,46,0|script|East Egg Collector|358
+{
+    if ($@DragonEggQuestState == 0 || $@DragonEggQuestParty != getcharid(1)) goto L_NoQuest;
+
+    mes "[Strange Person]";
+    mes "\"Take it! Take it!!\"";
+    if (countitem(6006) >= 1) goto L_DeleteDragonEgg;
+    if (countitem(6006) < 1 && $@CanGiveDragonEgg == 1) goto L_GetDragonEgg;
+    close;
+
+    L_NoQuest:
+        mes "[Strange Person]";
+        mes "\"You're not the right one!! Begone!\"";
+        
+        warp "Random", 50, 50;
+
+        close;
+
+    L_DeleteDragonEgg:
+        delitem 6006, 1;
+        if (countitem(6006) >= 1) goto L_DeleteDragonEgg;
+        if ( $@CanGiveDragonEgg == 1) goto L_GetDragonEgg;
+        close;
+
+    L_GetDragonEgg:
+        getitem 6006, 1;
+        set $@CanGiveDragonEgg, 0;
+        set DragonEggPickupDay, gettime(2);
+        set DragonEggPickupHour, gettime(1);
+        mes "Timing: " + DragonEggPickupDay;
+        specialeffect FX_MAGIC_BLUE_TELEPORT;
+        initnpctimer;
+        close;
+
+    OnTimer100:
+        disablenpc "East Egg Collector";
+        end;
+}
+
+//same as North Egg Collector 
+001-2.gat,112,46,0|script|West Egg Collector|358
+{
+    if ($@DragonEggQuestState == 0 || $@DragonEggQuestParty != getcharid(1)) goto L_NoQuest;
+
+    mes "[Strange Person]";
+    mes "\"Take it! Take it!!\"";
+    if (countitem(6006) >= 1) goto L_DeleteDragonEgg;
+    if (countitem(6006) < 1 && $@CanGiveDragonEgg == 1) goto L_GetDragonEgg;
+    close;
+
+    L_NoQuest:
+        mes "[Strange Person]";
+        mes "\"You're not the right one!! Begone!\"";
+        
+        warp "Random", 50, 50;
+
+        close;
+
+    L_DeleteDragonEgg:
+        delitem 6006, 1;
+        if (countitem(6006) >= 1) goto L_DeleteDragonEgg;
+        if ( $@CanGiveDragonEgg == 1) goto L_GetDragonEgg;
+        close;
+
+    L_GetDragonEgg:
+        getitem 6006, 1;
+        set $@CanGiveDragonEgg, 0;
+        set DragonEggPickupDay, gettime(2);
+        set DragonEggPickupHour, gettime(1);
+        mes "Timing: " + DragonEggPickupDay;
+        specialeffect FX_MAGIC_BLUE_TELEPORT;
+        initnpctimer;
+        close;
+
+    OnTimer100:
+        disablenpc "West Egg Collector";
+        end;
+}
+
+//
+001-2.gat,111,27,0|script|Dragon Tamer#5|116
+{
+    mes "[Dragon Wizard]";
+    mes "\"Behold! I shall summon a great dragon to smite all who stand in my path!\"";
+    next;
+    monster "001-2.gat", 107, 27, "Good", 1133, 1;
+    close;
+}
+
+//Debug DragonEggQuest Wizard
+001-2.gat,110,32,0|script|Wizard#8|362
+{
+    mes "\"Greetings " + strcharinfo(1);
+
+
+    mes "Hello there fellow developer,";
+    mes "what do you want me to do?";
+    mes "";
+    mes "Set quest state to: ";
+    menu
+        "1. quest not given yet - 0", L_St0,
+        "2. quest given, not solved - 1", L_St1,
+        "3. egg acquired, no potion - 2", L_St2,
+        "4. potion acquired, no egg - 3", L_St3,
+        "5. both egg and potion acquired, dragon not hatched - 4", L_St4,
+        "6. waiting for the dragon to hatch - 5", L_St5,
+        "7. dragon hatched, spell unknown - 6", L_St6,
+        "8. quest done - 7", L_St7;
+    L_St0:
+        set $@DragonEggQuestState, 0;
+        goto L_End;
+    L_St1:
+        set $@DragonEggQuestState, 1;
+        goto L_End;
+    L_St2:
+        set $@DragonEggQuestState, 2;
+        goto L_End;
+    L_St3:
+        set $@DragonEggQuestState, 3;
+        goto L_End;
+    L_St4:
+        set $@DragonEggQuestState, 4;
+        goto L_End;
+    L_St5:
+        set $@DragonEggQuestState, 5;
+        goto L_End;
+    L_St6:
+        set $@DragonEggQuestState, 6;
+        goto L_End;
+    L_St7:
+        set $@DragonEggQuestState, 7;
+        goto L_End;
+
+    L_End:
+        close;
+}
+
+//Arch-Wizard
+001-2.gat,104,27,0|script|Arch-Wizard#9|354
+{
+    //check if player is in a Party when the quest is not active, or is in the right party when quest is active
+    if (
+        ($@DragonEggQuestState == 0 && 
+            getcharid(1)) 
+        || 
+        ($@DragonEggQuestState > 0 && 
+            $@DragonEggQuestParty == getcharid(1))
+        ) goto L_Quest;
+
+    //if player is not in a Party, tell them to sod off
+    mes "[Arch-Wizard]";
+    mes "\"You infidel! How dare you approach me?!";
+    next;
+
+    mes "Go and boil your bottom, you son of a silly person.";
+    mes "I shall not talk to anybody who thinks they can operate alone.";
+    next;
+
+    mes "I don't want to talk to you no more, you empty-headed animal food trough wiper! I fart in your general direction!";
+    next;
+    
+    mes "Now go away or I shall taunt you a second time!\"";
+    goto L_End;
+
+//if Player is in a Party when the quest is not active, or is in the right party when quest is active
+L_Quest:
+    mes "[Arch-Wizard]";
+    mes "\"Greetings " + strcharinfo(0) + " of " + strcharinfo(1) + "!";
+
+    //if the Player did not start this Quest, offer it to them
+    if ($@DragonEggQuestState == 0) goto L_St0;
+
+    //update Quest status
+
+    //if the Player has the egg
+    if (countitem(6006) && $@DragonEggQuestState<5) goto L_St2;
+
+    //if the Player has the potion
+    if (countitem(6606) && $@DragonEggQuestState<5) goto L_St3;
+
+    //if the Player has both items
+    if (countitem(6006) && countitem(6606) && $@DragonEggQuestState<5) goto L_St4;
+
+    //act according to the state of the quest
+    if ($@DragonEggQuestState == 1) goto L_St1;
+    if ($@DragonEggQuestState == 2) goto L_St2;
+    if ($@DragonEggQuestState == 3) goto L_St3;
+    if ($@DragonEggQuestState == 4) goto L_St4;
+    if ($@DragonEggQuestState == 5) goto L_St5;
+    if ($@DragonEggQuestState == 6) goto L_St6;
+    if ($@DragonEggQuestState == 7) goto L_St7;
+    goto L_End;
+
+//if the Player has not started this Quest yet
+L_St0:
+    mes "";
+    mes "I've been expecting you, and Fate has brought you to me. I have a quest for you.\"";
+    next;
+    mes "<quest description>";
+    next;
+    mes "\"Are you willing to take on the quest?\"";
+    menu
+        "Yes.", L_QuestStart,
+        "Another time perhaps.", L_End;
+
+L_QuestStart:
+    set $@DragonEggQuestState, 1;
+    set $@DragonEggQuestParty, getcharid(1);
+    mes "[Arch-Wizard]";
+    mes "\"Indeed you are brave, young one. Return to me upon solving the quest.\"";
+    next;
+    mes "\"May the odds be ever in your favor!\"";
+    goto L_End;
+
+//if Player has started the Quest, but has nothing
+L_St1:
+    mes "";
+    mes "How is the quest going? I can see you have neither the egg, nor the potion. Your lack of effort is disturbing.\"";
+    next;
+    mes "\"Now go, and may the gods be with you.\"";
+    goto L_End;
+
+//if Player has started the Quest, but has the Egg only
+L_St2:
+    mes "";
+    mes "This egg you have is useless without the hatching potion. My supplies have run out, but you could ask around for advice on making some.\"";
+    next;
+    mes "\"Once you have mixed the potion, come back to me.\"";
+    next;
+    mes "\"But hurry, for not more then a day can pass between the egg being laid and hatching.\"";
+    goto L_End;
+
+//if Player has started the Quest, but has the Potion only
+L_St3:
+    mes "";
+    mes "Ah, I see you managed making some hatching potion. Very good.\"";
+    next;
+    mes "\"What is the purpose of a chocolate cake if there is nobody to eat it? You must find the egg! Ask around for further advice.\"";
+    next;
+    mes "\"Once you have found the egg, come back to me.\"";
+    goto L_End;
+
+//if Player has started the Quest, and has both the egg and the potion
+L_St4:
+    mes "Here you are, bearing an egg of a dragon and the hatching potion; excellent!";
+    mes "Only one is capable of hatching a dragon egg. He chose solitary life, and is quite elusive, but you will find him: Ankonno the Egg Hermit.\"";
+    goto L_End;
+
+//if the Player gave the egg and the potion to the Hermit
+L_St5:
+    mes "Ankonno the Egg Hermit is the only one capable of hatching a dragon egg. He chose solitary life, and is quite elusive, but you will find him.\"";
+    goto L_End;
+
+//if the Hermit hatched the egg
+L_St6:
+    mes "Summoning a dragon?";
+    mes "That is some potent magic, not available to anybody. You did prove yourself, however, so I will teach you the incantation, but use it on your own accord.";
+    next;
+    mes "You can summon the dragon using incantation #dovahkiin.\"";
+    //the Quest is finally finished
+    set $@DragonEggQuestState, 7;
+    goto L_End;
+
+L_St7:
+    mes "";
+    mes "Such a beautiful beast, dragon!\"";
+    next;
+    mes "\"They are fierce enemies, but you have a tame one. Use it wisely now that you can summon it in battle using incantation #dovahkiin.\"";
+    next;
+    mes "\"Farewell, young one!\"";
+    goto L_End;
+L_End:
+    close;
+}
+
+001-2.gat,97,27,0|script|Ankonno the Egg Hermit|116
+{
+    mes "[Egg Hermit]";
+    mes "\"You? Who are you?";
+
+    //if the Player did not start this Quest, or is in the wrong party when quest is active
+    if ($@DragonEggQuestState == 0 
+        ||
+        ($@DragonEggQuestState > 0 && 
+            $@DragonEggQuestParty != getcharid(1))
+        ) goto L_St0;
+
+    if (countitem(6006) && 
+        ((DragonEggPickupDay < $@DragonEggLaidDay) || 
+                    ((DragonEggPickupDay == $@DragonEggLaidDay) && 
+                                (DragonEggPickupHour < $@DragonEggLaidHour)))) goto L_BadEgg;
+
+    if (countitem(6006) && 
+        ((DragonEggPickupDay > $@DragonEggLaidDay + 1) || 
+                    ((DragonEggPickupDay == $@DragonEggLaidDay + 1) && 
+                                (DragonEggPickupHour > $@DragonEggLaidHour)))) goto L_BadEgg;
+
+    if (countitem(6006) && (
+        (gettime(2) == $@DragonEggLaidDay && gettime(1) <= $@DragonEggLaidHour) ||
+        ((gettime(2) == $@DragonEggLaidDay + 1) && gettime(1) > $@DragonEggLaidHour))) goto L_BadEgg;
+
+    //update Quest status
+
+    //if the Player has the egg
+    if (countitem(6006) && $@DragonEggQuestState<5) goto L_St2;
+
+    //if the Player has the potion
+    if (countitem(6606) && $@DragonEggQuestState<5) goto L_St3;
+
+    //if the Player has both items
+    if (countitem(6006) && countitem(6606) && $@DragonEggQuestState<5) set $@DragonEggQuestState, 4;
+
+    //act according to the state of the quest
+    if ($@DragonEggQuestState == 1) goto L_St1;
+    if ($@DragonEggQuestState == 2) goto L_St2;
+    if ($@DragonEggQuestState == 3) goto L_St3;
+    if ($@DragonEggQuestState == 4) goto L_St4;
+    if ($@DragonEggQuestState == 5) goto L_St5;
+    if ($@DragonEggQuestState == 6) goto L_St5;
+    if ($@DragonEggQuestState == 7) goto L_St7;
+    goto L_End;
+
+L_BadEgg:
+    mes "This egg you have is bad, and you should feel bad. No amount of hatching potion will help you now.";
+    mes "Let me throw that away for you. These can be hazardous for the environment.\"";
+    mes "You are simply late: " + $@DragonEggLaidDay + ":" + $@DragonEggLaidHour + " vs " + DragonEggPickupDay + ":" + DragonEggPickupHour + " vs " + gettime(2) + ":" + gettime(1);
+    delitem 6006, 1;
+    //if the Player has the potion
+    if (countitem(6606) && $@DragonEggQuestState<5) set $@DragonEggQuestState, 3;
+    if (countitem(6606) == 0 && $@DragonEggQuestState < 5) set $@DragonEggQuestState, 1;
+    goto L_End;
+
+L_St0:
+    mes "Never mind,I got my work to do anyway. Get outta my way, don't you see I'm working?\"";
+    menu
+        "What are you doing?", L_Next,
+        "O..K... (you back away slowly)", L_End;
+L_Next:
+    mes "[Egg Hermit]";
+    mes "\"I'm trying to hatch this duckling egg, but I'm out of hatching potion. You don't seem like somebody who'd have it, so go away.\"";
+    goto L_End;
+
+//if Player has started the Quest, but has nothing
+L_St1:
+    mes "What is that I sense, you want to hatch a dragon? Hahahaha, you will need a dragon egg for that! And hatching potion, lots of hatching potion.\"";
+    goto L_End;
+
+//if Player has started the Quest, but has the Egg only
+L_St2:
+    mes "Never mind, I see you have a dragon egg with you. Curious things, dragon eggs. But nothing can be done without some hatching potion.\"";
+    goto L_End;
+
+//if Player has started the Quest, but has the Potion only
+L_St3:
+    mes "Ooh! Yes, that's it!";
+    mes "That's the right potion. Now if only I had an egg to hatch...\"";
+    mes "(continues mumbiling)";
+    goto L_End;
+
+//if Player has started the Quest, and has both the egg and the potion
+L_St4:
+    mes "Oh good, good! I'll take the egg and the potion.";
+    //take both items from the Player
+    delitem 6606, 1;
+    delitem 6006, 1;
+    next;
+    mes "(the Egg Hermit inspects both items with great interest)";
+    next;
+    mes "Now let's try to hatch this thing...";
+    next;
+    mes "I will need some time to prepare. Come back later.\"";
+    set $@DragonEggQuestState, 5;
+    goto L_End;
+
+L_St5:
+    next;
+    mes "The dragon! Yes, yes...";
+    next;
+    mes "It worked!!!";
+    next;
+    mes "But the dragon just flew away. I think it's on the roof...";
+    mes "Consult the Arch-Wizard, His Excelency might have an idea how to summon it back.\"";
+    set $@DragonEggQuestState, 6;
+    goto L_End;
+
+L_St7:
+    mes "Whatever. Let me see, what could I hatch now?";
+    next;
+    mes "Meh, no fun after hatching a dragon. What could ever be more exciting?\"";
+    goto L_End;
+
+L_End:
+    close;
 }
