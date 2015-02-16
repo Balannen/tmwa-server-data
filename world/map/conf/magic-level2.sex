@@ -1472,3 +1472,36 @@
                 (message caster "You hid someone!"))
             (ATEND
                 (message target "You are no longer hidden.")))))
+
+(SPELL (LOCAL) summon-dragon "#dovahkiin" ()
+    (LET level 1)
+    (LET school DARK)
+    (=>
+        (GUARD
+            (MANA 40)
+            (CASTTIME 15000)
+            (REQUIRE
+                (>
+                    (skill caster MAGIC)
+                    level))
+            (REQUIRE
+                (>
+                    (skill caster school)
+                    level))
+            (REQUIRE
+                (== 
+                    (script_int caster "DragonEggQuest")
+                    7))
+            (COMPONENTS "SlingBullet"))
+        (EFFECT
+            (CALL fightclub_check 0 0)
+            (CALL adjust_spellpower school)
+            (CALL default_effect)
+            (CALL gain_xp 3 31)
+            (CALL summon_spell 1133
+                1
+                (- 4000
+                    (* spellpower 9))
+                (* spellpower 80)
+                2
+                school))))
