@@ -600,8 +600,12 @@ L_St5:
 //if the Hermit hatched the egg
 L_St6:
     mes "Summoning a dragon?";
-    mes "That is some potent magic, not available to anybody. You did prove yourself, however, so I will teach you the incantation, but use it on your own accord.";
+    mes "That is some potent magic, not available to just anybody. You did prove yourself, however, so I will teach you the incantation, but use it on your own accord.";
     next;
+    mes "We shall perform a ritual, so that all of you can summon it.";
+    mes "Make sure you have all your party members gathered here.";
+    next;
+    areatimer "001-2", 94, 17, 114, 37, 0, "#DragonEggVariableSetter::OnSetSkill";
     mes "You can summon the dragon using incantation #dovahkiin.\"";
     //the Quest is finally finished
     set DragonEggQuestState, 7;
@@ -987,4 +991,12 @@ function|script|CheckingHelpers{
 
         donpcevent "Hermit::OnEggPickup";
         close;
+}
+
+001-2.gat,1,1,0|script|#DragonVariableSetter|127
+{
+    end; // this NPC will do nothing until called with areatimer
+OnSetSkill:
+    set DragonSummonParty, getcharid(1); // store the party ID
+    setskill SKILL_SUMMONDRAGON, 1; // give the skill to the player
 }
