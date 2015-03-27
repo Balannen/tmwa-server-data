@@ -1,0 +1,6 @@
+
+
+rule1,0,0,0|script|Mobrule1|-1
+{
+    end;
+}
