@@ -4,3 +4,6 @@
 [submodule "tools"]
 	path = tools
 	url = git://github.com/themanaworld/tmw-tools.git
+[submodule "https://github.com/themanaworld/tmw-tools.git"]
+	path = https://github.com/themanaworld/tmw-tools.git
+	url = https://github.com/themanaworld/tmwa-server-data.git
