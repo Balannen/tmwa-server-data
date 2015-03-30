@@ -36,7 +36,6 @@
 355,    0,      0,      0,      0,      0,      9,      10,     0,              no,             0,                      0,      0,              weapon,         0,              passive,str,    Raging          //SKILL_RAGING implemented
 28,     0,      6,      4,      0,      1,      0,      2,      1,              yes,            0,                      0,      0,              magic,          0,              no,     none,   Teleport        //AL_TELEPORT
 30,     9,      6,      16,     0,      1,      0,      10,     1,              yes,            0,                      0,      0,              magic,          0,              no,     none,   Heal            //AL_HEAL
-349,      0,      0,      0,      0,      0,      0,      1,      0,              no,             0,                      0,      0,              none,           0,              no,     none,   Dragon 		  //SUMMONDRAGON
 // maxrse describes the max. level that the skill can be raised to through the `raise skill' option.  Further raising has to happen via quests.
 // maxrse < max.
 // `pool' can be `no', `active', or `passive'.

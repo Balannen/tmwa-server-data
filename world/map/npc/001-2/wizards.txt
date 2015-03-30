@@ -443,6 +443,9 @@ OnInit:
     mes "Chosen One Name: " + DragonEggChosenOne$;
     mes "State of the Egg: " + $@DragonEggState;
     mes "Map: " + getmap();
+    mes "Can summon: " + @CanSummonDragon;
+    mes "Dragon party: " + DragonSummonParty;
+    mes "There are so many players here: " + getareausers("001-2", 94, 17, 114, 37);
     mes "what do you want me to do?";
     mes "";
     mes "Set quest state to: ";
@@ -487,11 +490,8 @@ OnInit:
 //Arch-Wizard
 001-2.gat,104,27,0|script|Arch-Wizard#9|354
 {
-    //check if player is in a Party when the quest is not active, or is in the right party when quest is active
-    if (
-        (DragonEggQuestState == 0 && 
-            getcharid(1))
-        ) goto L_Quest;
+    //check if player is in a Party
+    if (getcharid(1)) goto L_Quest;
 
     //if player is not in a Party, tell them to sod off
     mes "[Arch-Wizard]";
@@ -508,7 +508,7 @@ OnInit:
     mes "Now go away or I shall taunt you a second time!\"";
     goto L_End;
 
-//if Player is in a Party when the quest is not active, or is in the right party when quest is active
+//if Player is in a Party when the quest is not active
 L_Quest:
     mes "[Arch-Wizard]";
     mes "\"Greetings " + strcharinfo(0) + " of " + strcharinfo(1) + "!";
@@ -605,7 +605,7 @@ L_St6:
     mes "We shall perform a ritual, so that all of you can summon it.";
     mes "Make sure you have all your party members gathered here.";
     next;
-    areatimer "001-2", 94, 17, 114, 37, 0, "#DragonEggVariableSetter::OnSetSkill";
+    areatimer "001-2", 94, 17, 114, 37, 500, "#DragonSpell::OnSet";
     mes "You can summon the dragon using incantation #dovahkiin.\"";
     //the Quest is finally finished
     set DragonEggQuestState, 7;
@@ -619,6 +619,7 @@ L_St7:
     next;
     mes "\"Farewell, young one!\"";
     goto L_End;
+
 L_End:
     close;
 }
@@ -993,10 +994,12 @@ function|script|CheckingHelpers{
         close;
 }
 
-001-2.gat,1,1,0|script|#DragonVariableSetter|127
+001-2.gat,105,27,0|script|#DragonSpell|127
 {
     end; // this NPC will do nothing until called with areatimer
-OnSetSkill:
-    set DragonSummonParty, getcharid(1); // store the party ID
-    setskill SKILL_SUMMONDRAGON, 1; // give the skill to the player
+    OnSet:
+        set DragonSummonParty, getcharid(1); // store the party ID
+        specialeffect FX_MAGIC_BLUE_TELEPORT;
+        end;
+        //setskill SKILL_SUMMONDRAGON, 1; // give the skill to the player
 }
