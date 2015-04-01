@@ -160,38 +160,8 @@
     close;
 }
 
-//Script for potion dealing - will be added to another NPC (i.e. Pauline the Witch)
-001-2.gat,97,40,0|script|Potion Dealer Wizard#2|356
-{
-    if (DragonEggQuestState == 0 || DragonEggQuestParty != getcharid(1)) goto L_NoQuest;
-    mes "[Potion Dealer]";
-    mes "\"Do you wish me to create a hatching potion? All it takes is one Snake Egg.\"";
-    menu
-        "Yes.", L_Potion,
-        "No.", L_End;
-
-    L_NoQuest:
-        mes "[Potion Dealer]";
-        mes "\"I see you wish for something child. You are at the right place, but in wrong time.\"";
-        goto L_End;
-
-    L_Potion:
-        if (countitem("SnakeEgg") < 1) goto L_NoPotion;
-        delitem "SnakeEgg", 1;
-        getitem 6606, 1;
-        mes "\"Brand new hatching potion for you!\"";
-        goto L_End;
-
-    L_NoPotion:
-        mes "\"No potion for you!\"";
-        goto L_End;
-
-    L_End:
-        close;
-}
-
 //
-001-2.gat,112,40,0|script|CentralEggAuthority|358
+001-2.gat,112,40,0|script|Calimero|358
 {
 //for testing purposes
 mes "Interval: " + $@HatcheryInterval;
@@ -205,13 +175,13 @@ mes "Group: " + getcharid(1);
 close;
 
 //Interval dependent on the random value of $@HatcheryInterval variable, run every 1h, 1:05h, 1:10h
-OnTimer3600000:
+OnTimer300000:
     if ( $@HatcheryInterval == 0) goto L_LayEgg;
     end;
-OnTimer3900000:
+OnTimer350000:
     if ( $@HatcheryInterval == 1) goto L_LayEgg;
     end;
-OnTimer4200000:
+OnTimer400000:
     if ( $@HatcheryInterval == 2) goto L_LayEgg;
     end;
 
@@ -219,7 +189,7 @@ OnTimer4200000:
 L_LayEgg:
 
     //choose location on random
-    set $@location, 1;//rand(3);
+    set $@location, rand(3);
 
     //disable all egg giving NPCs, so there would be no two of the kind
     disablenpc "Egg Collector#S";
@@ -269,12 +239,6 @@ OnInit:
 
     //get interval value
     set $@HatcheryInterval, rand(3);
-
-    //disable all egg giving NPCs
-    disablenpc "Egg Collector#S";
-    disablenpc "Egg Collector#N";
-    disablenpc "Egg Collector#W";
-    //disablenpc "South Egg Collector"; - placeholder
 
     goto L_LayEgg;
 }
@@ -999,4 +963,34 @@ function|script|CheckingHelpers{
         specialeffect FX_MAGIC_BLUE_TELEPORT;
         end;
         //setskill SKILL_SUMMONDRAGON, 1; // give the skill to the player
+}
+
+//Script for potion dealing - will be added to another NPC (i.e. Pauline the Witch)
+001-2.gat,97,40,0|script|Potion Dealer Wizard#2|356
+{
+    if (DragonEggQuestState == 0 || DragonEggQuestParty != getcharid(1)) goto L_NoQuest;
+    mes "[Potion Dealer]";
+    mes "\"Do you wish me to create a hatching potion? All it takes is one Snake Egg.\"";
+    menu
+        "Yes.", L_Potion,
+        "No.", L_End;
+
+    L_NoQuest:
+        mes "[Potion Dealer]";
+        mes "\"I see you wish for something child. You are at the right place, but in wrong time.\"";
+        goto L_End;
+
+    L_Potion:
+        if (countitem("SnakeEgg") < 1) goto L_NoPotion;
+        delitem "SnakeEgg", 1;
+        getitem 6606, 1;
+        mes "\"Brand new hatching potion for you!\"";
+        goto L_End;
+
+    L_NoPotion:
+        mes "\"No potion for you!\"";
+        goto L_End;
+
+    L_End:
+        close;
 }
