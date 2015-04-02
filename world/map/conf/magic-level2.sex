@@ -1474,34 +1474,32 @@
                 (message target "You are no longer hidden.")))))
 
 (SPELL (LOCAL) summon-dragon "#dovahkiin" ()
-    (LET level 1)
-    (LET school DARK)
     (=>
         (GUARD
             (MANA 40)
-            (CASTTIME 15000)
-            (REQUIRE
-                (>
-                    (skill caster MAGIC)
-                    level))
-            (REQUIRE
-                (>
-                    (skill caster school)
-                    level))
-            (REQUIRE
-                (== 
-                    (script_int caster "DragonEggQuest")
-                    7))
-            (COMPONENTS "SlingBullet"))
+            (CASTTIME 5000))
         (EFFECT
-            (CALL fightclub_check 0 0)
-            (CALL adjust_spellpower school)
+            (SCRIPT "{
+                set @CanSummonDragon, 0;
+                if(getcharid(1) == DragonSummonParty) goto L_Cast; // we are still in the party so we can cast
+                set DragonSummonParty, 0; // no longer in the party so we erase this var
+                end;
+            L_Cast:
+                set @CanSummonDragon, 1; // this will allow the magic engine to know we can cast
+                end;
+            }")
+            (IF (< 
+                    (script_int caster "@CanSummonDragon")
+                    1)
+                    (ABORT))
             (CALL default_effect)
-            (CALL gain_xp 3 31)
-            (CALL summon_spell 1133
-                1
-                (- 4000
-                    (* spellpower 9))
-                (* spellpower 80)
+            (sfx location SFX_SUMMON_START 0)
+            (WAIT 500)
+            (sfx location SFX_SUMMON_FIRE 0)
+            (spawn
+                (rbox location 2)
+                caster
+                1134
                 2
-                school))))
+                1
+                60000))))

@@ -1,5 +1,12 @@
 // This file is generated automatically. All manually added changes will be removed when running the Converter.
 
+import: npc/0-100/_import.txt
+import: npc/0-101/_import.txt
+import: npc/0-102/_import.txt
+import: npc/0-103/_import.txt
+import: npc/0-104/_import.txt
+import: npc/0-111/_import.txt
+import: npc/0-150/_import.txt
 import: npc/001-1/_import.txt
 import: npc/001-2/_import.txt
 import: npc/001-3/_import.txt
@@ -102,4 +109,10 @@ import: npc/055-1/_import.txt
 import: npc/055-3/_import.txt
 import: npc/056-2/_import.txt
 import: npc/057-1/_import.txt
+import: npc/060-10/_import.txt
+import: npc/060-12/_import.txt
+import: npc/060-13/_import.txt
+import: npc/060-7/_import.txt
+import: npc/060-8/_import.txt
+import: npc/060-9/_import.txt
 import: npc/botcheck/_import.txt

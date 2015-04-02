@@ -1,0 +1,18 @@
+// This file is generated automatically. All manually added changes will be removed when running the Converter.
+// South Tulimshar Indoor warps
+
+060-10,25,65|warp|To Outside#060-100|-1,-1,001-1,114,100
+060-10,28,102|warp|To Outside#060-101|-1,-1,001-1,27,33
+060-10,28,86|warp|To Light#060-102|-1,-1,001-1,28,22
+060-10,105,102|warp|To Outside#060-103|0,-1,001-1,54,35
+060-10,25,28|warp|To Outside#060-104|-1,-1,001-1,49,72
+060-10,28,28|warp|To Outside#060-105|-1,-1,001-1,52,72
+060-10,31,28|warp|To Outside#060-106|-1,-1,001-1,55,72
+060-10,71,102|warp|To Outside#060-107|-1,-1,001-1,37,33
+060-10,105,73|warp|Council Chamber#060-108|2,-1,060-10,104,42
+060-10,105,43|warp|Main Floor#060-109|2,-1,060-10,104,74
+060-10,114,53|warp|Parapet#060-1010|-1,-1,001-1,57,23
+060-10,95,53|warp|Parapet#060-1011|-1,-1,001-1,52,23
+060-10,57,90|warp|Lighthouse#060-1012|-1,-1,060-10,35,94
+060-10,36,95|warp|MainFloor#060-1013|-1,0,060-10,58,90
+060-10,65,26|warp|Outside#060-1014|-1,-1,001-1,59,99

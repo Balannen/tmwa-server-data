@@ -1,0 +1,9 @@
+// This file is generated automatically. All manually added changes will be removed when running the Converter.
+// South Tulimshar Indoor mobs
+
+
+
+0-101,0,0,0|script|Mob0-101|-1
+{
+    end;
+}

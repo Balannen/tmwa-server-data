@@ -1,0 +1,377 @@
+// Council of Ruling Wizards Room
+//
+// Variables:
+//  DragonEggQuestState - global variable storing quest states
+//  DragonEggQuestParty - global variable storing ID of the party which is solving the quest
+//  DragonEggHelper1$ - group member, string variable
+//  DragonEggHelper2$ - group member, string variable
+//  DragonEggChosenOneID - player ID who got the egg
+//  DragonEggChosenOne$ - player name who got the egg
+//  $@DragonEggState - state of the Egg: 0 if bad, 1 if good
+//
+// Dragon egg quest states:
+// 1. quest not given yet: DragonEggQuestState is 0
+// 2. quest given, not solved: DragonEggQuestState is 1
+// 3. egg acquired, no potion: DragonEggQuestState is 2
+// 4. potion acquired, no egg: DragonEggQuestState is 3
+// 5. both egg and potion acquired, dragon not hatched: DragonEggQuestState is 4
+// 6. waiting for the dragon to hatch: DragonEggQuestState is 5
+// 7. dragon hatched, spell not learned: DragonEggQuestState is 6
+// 8. quest solved: DragonEggQuestState is 7
+//
+
+// manaseed
+0-111.gat,104,19,0|script|Desert Mana Seed#111|166
+{
+    mes "(almost inaudible voice is coming from the stone, although nobody seems to notice it)";
+    next;
+    mes "[Desert Mana Seed]";
+    mes "\"" + strcharinfo(0) + " of " + strcharinfo(1) + " I can see your future bright with flame.\"";
+    close;
+}
+
+// 
+0-111.gat,99,22,0|script|Yellow Wizard#111|355
+{
+    if ( DragonEggQuestState == 7 ) goto L_QuestDone;
+
+    mes "Dragon eggs are really hard to transport";
+    mes "since they break easily, I heard you";
+    mes "need three people skilled in war, ";
+    mes "archery and magic to always be around."; 
+    goto L_Close;
+
+    L_QuestDone:
+        mes "Did you know you can summon guild";
+        mes "pets in battle?";
+        goto L_Close;
+
+    L_Close:
+        close;
+}
+
+//
+0-111.gat,92,24,0|script|Orange Wizard#111|356
+{
+    if ( DragonEggQuestState == 7 ) goto L_QuestDone;
+
+    mes "I heard that there have been dragons ";
+    mes "sighted in ... (pointing to dragon nests)";
+    goto L_Close;
+
+    L_QuestDone:
+        mes "Well done, you did a very good job!";
+        goto L_Close;
+
+    L_Close:
+        close;
+}
+
+//
+0-111.gat,92,30,0|script|Green Wizard#111|357
+{
+    if ( DragonEggQuestState == 7 ) goto L_QuestDone;
+
+    mes "[Green Wizard]";
+    mes "\"Whenever I need potions I go to a witch, they mix the finest of all.\"";
+    goto L_Close;
+
+    L_QuestDone:
+        mes "[Green Wizard]";
+        mes "\"You really did hatch that dragon, I can't believe it!\"";
+        goto L_Close;
+
+    L_Close:
+        close;
+}
+
+//
+0-111.gat,99,32,0|script|Purple Wizard#111|358
+{
+    if ( DragonEggQuestState == 7 ) goto L_QuestDone;
+
+    mes "I heard that there have been dragons ";
+    mes "sighted in ... (pointing to dragon nests)";
+    goto L_Close;
+
+    L_QuestDone:
+        mes "You really did hatch that dragon, I can't";
+        mes "believe it!";
+        goto L_Close;
+
+    L_Close:
+        close;
+}
+
+//
+0-111.gat,110,22,0|script|Pink Wizard#111|359
+{
+    if ( DragonEggQuestState == 7 ) goto L_QuestDone;
+
+    mes "I heard that there have been dragons ";
+    mes "sighted in ... (pointing to dragon nests)";
+    goto L_Close;
+
+    L_QuestDone:
+        mes "I wish I had some hatching potion left,";
+        mes "guilds pay lots of gold for them on the";
+        mes "market";   
+        goto L_Close;
+
+    L_Close:
+        close;
+}
+
+//
+0-111.gat,117,24,0|script|Black Wizard#111|360
+{
+    if ( DragonEggQuestState == 7 ) goto L_QuestDone;
+
+    mes "Dragons are quite picky while laying";
+    mes "their eggs, they never lay eggs in the";
+    mes "same nest twice.";
+    goto L_Close;
+
+    L_QuestDone:
+        mes "I heard dragons are fierce in battle";
+        mes "when protecting their masters.";
+        goto L_Close;
+
+    L_Close:
+        close;
+}
+
+//
+0-111.gat,117,30,0|script|White Wizard#111|361
+{
+    if ( DragonEggQuestState == 7 ) goto L_QuestDone;
+
+    mes "I heard that there have been dragons ";
+    mes "sighted in ... (pointing to dragon nests)";
+    goto L_Close;
+
+    L_QuestDone:
+        mes "This dragon on the roof is really";
+        mes "upsetting me. Can't you just take ";
+        mes "it with you?";
+        goto L_Close;
+
+    L_Close:
+    close;
+}
+
+//
+0-111.gat,111,27,0|script|Dragon Tamer#111|116
+{
+    mes "[Dragon Wizard]";
+    mes "\"Behold! I shall summon a great dragon to smite all who stand in my path!\"";
+    next;
+    monster "0-111.gat", 107, 27, "Good", 1133, 1;
+    close;
+}
+
+//Debug DragonEggQuest Wizard
+0-111.gat,110,32,0|script|Wizard#111|362
+{
+    mes "\"Greetings " + strcharinfo(1);
+
+
+    mes "Hello there fellow developer,";
+    mes "Variables are as follows:";
+    mes "Quest state: " + DragonEggQuestState;
+    mes "Helper 1: " + DragonEggHelper1$;
+    mes "Helper 2: " + DragonEggHelper2$;
+    mes "Chosen One ID: " + DragonEggChosenOneID;
+    mes "Chosen One Name: " + DragonEggChosenOne$;
+    mes "State of the Egg: " + $@DragonEggState;
+    mes "Map: " + getmap();
+    mes "Can summon: " + @CanSummonDragon;
+    mes "Dragon party: " + DragonSummonParty;
+    mes "There are so many players here: " + getareausers("0-111", 94, 17, 114, 37);
+    mes "what do you want me to do?";
+    mes "";
+    mes "Set quest state to: ";
+    menu
+        "1. quest not given yet - 0", L_St0,
+        "2. quest given, not solved - 1", L_St1,
+        "3. egg acquired, no potion - 2", L_St2,
+        "4. potion acquired, no egg - 3", L_St3,
+        "5. both egg and potion acquired, dragon not hatched - 4", L_St4,
+        "6. waiting for the dragon to hatch - 5", L_St5,
+        "7. dragon hatched, spell unknown - 6", L_St6,
+        "8. quest done - 7", L_St7;
+    L_St0:
+        set DragonEggQuestState, 0;
+        goto L_End;
+    L_St1:
+        set DragonEggQuestState, 1;
+        goto L_End;
+    L_St2:
+        set DragonEggQuestState, 2;
+        goto L_End;
+    L_St3:
+        set DragonEggQuestState, 3;
+        goto L_End;
+    L_St4:
+        set DragonEggQuestState, 4;
+        goto L_End;
+    L_St5:
+        set DragonEggQuestState, 5;
+        goto L_End;
+    L_St6:
+        set DragonEggQuestState, 6;
+        goto L_End;
+    L_St7:
+        set DragonEggQuestState, 7;
+        goto L_End;
+
+    L_End:
+        close;
+}
+
+//Arch-Wizard
+0-111.gat,104,27,0|script|Arch-Wizard#111|354
+{
+    //check if player is in a Party
+    if (getcharid(1)) goto L_Quest;
+
+    //if player is not in a Party, tell them to sod off
+    mes "[Arch-Wizard]";
+    mes "\"You infidel! How dare you approach me?!";
+    next;
+
+    mes "Go and boil your bottom, you son of a silly person.";
+    mes "I shall not talk to anybody who thinks they can operate alone.";
+    next;
+
+    mes "I don't want to talk to you no more, you empty-headed animal food trough wiper! I fart in your general direction!";
+    next;
+    
+    mes "Now go away or I shall taunt you a second time!\"";
+    goto L_End;
+
+    //if Player is in a Party when the quest is not active
+    L_Quest:
+        mes "[Arch-Wizard]";
+        mes "\"Greetings " + strcharinfo(0) + " of " + strcharinfo(1) + "!";
+
+        //if the Player did not start this Quest, offer it to them
+        if (DragonEggQuestState == 0) goto L_St0;
+
+        //update Quest status
+
+        //if the Player has the egg
+        if (countitem(6006) && DragonEggQuestState<5) set DragonEggQuestState, 2;
+
+        //if the Player has the potion
+        if (countitem(6606) && DragonEggQuestState<5) set DragonEggQuestState, 3;
+
+        //if the Player has both items
+        if (countitem(6006) && countitem(6606) && DragonEggQuestState<5) set DragonEggQuestState, 4;
+
+        //act according to the state of the quest
+        if (DragonEggQuestState == 1) goto L_St1;
+        if (DragonEggQuestState == 2) goto L_St2;
+        if (DragonEggQuestState == 3) goto L_St3;
+        if (DragonEggQuestState == 4) goto L_St4;
+        if (DragonEggQuestState == 5) goto L_St5;
+        if (DragonEggQuestState == 6) goto L_St6;
+        if (DragonEggQuestState == 7) goto L_St7;
+        goto L_End;
+
+    //if the Player has not started this Quest yet
+    L_St0:
+        mes "";
+        mes "I've been expecting you, and Fate has brought you to me. I have a quest for you.\"";
+        next;
+        mes "<quest description>";
+        next;
+        mes "\"Are you willing to sacrifice so much for such a strong ally?\"";
+        menu
+            "Yes.", L_QuestStart,
+            "Another time perhaps.", L_End;
+
+    L_QuestStart:
+        set DragonEggQuestState, 1;
+        mes "[Arch-Wizard]";
+        mes "\"Indeed you are brave, young one. Return to me upon solving the quest.\"";
+        next;
+        mes "\"May the odds be ever in your favor!\"";
+        goto L_End;
+
+    //if Player has started the Quest, but has nothing
+    L_St1:
+        mes "";
+        mes "How is the quest going? I can see you have neither the egg, nor the potion. Your lack of effort is disturbing.\"";
+        next;
+        mes "\"Now go, and may the gods be with you.\"";
+        goto L_End;
+
+    //if Player has started the Quest, but has the Egg only
+    L_St2:
+        mes "";
+        mes "This egg you have is useless without the hatching potion. My supplies have run out, but you could ask around for advice on making some.\"";
+        next;
+        mes "\"Once you have mixed the potion, come back to me.\"";
+        next;
+        mes "\"But hurry, for not more then a day can pass between the egg being laid and hatching.\"";
+        goto L_End;
+
+    //if Player has started the Quest, but has the Potion only
+    L_St3:
+        mes "";
+        mes "Ah, I see you managed making some hatching potion. Very good.\"";
+        next;
+        mes "\"What is the purpose of a chocolate cake if there is nobody to eat it? You must find the egg! Ask around for further advice.\"";
+        next;
+        mes "\"Once you have found the egg, come back to me.\"";
+        goto L_End;
+
+    //if Player has started the Quest, and has both the egg and the potion
+    L_St4:
+        mes "Here you are, bearing an egg of a dragon and the hatching potion; excellent!";
+        mes "Only one is capable of hatching a dragon egg. He chose solitary life, and is quite elusive, but you will find him: Ankonno the Egg Hermit.\"";
+        goto L_End;
+
+    //if the Player gave the egg and the potion to the Hermit
+    L_St5:
+        mes "Ankonno the Egg Hermit is the only one capable of hatching a dragon egg. He chose solitary life, and is quite elusive, but you will find him.\"";
+        goto L_End;
+
+    //if the Hermit hatched the egg
+    L_St6:
+        mes "Summoning a dragon?";
+        mes "That is some potent magic, not available to just anybody. You did prove yourself, however, so I will teach you the incantation, but use it on your own accord.";
+        next;
+        mes "We shall perform a ritual, so that all of you can summon it.";
+        mes "Make sure you have all your party members gathered here.";
+        next;
+        areatimer "0-111", 94, 17, 114, 37, 500, "#DragonSpell#111::OnSet";
+        mes "You can summon the dragon using incantation #dovahkiin.\"";
+        monster "0-111.gat", 113, 79, "Dragon", 1134, 1;
+        //the Quest is finally finished
+        set DragonEggQuestState, 7;
+        goto L_End;
+
+    L_St7:
+        mes "";
+        mes "Such a beautiful beast, dragon!\"";
+        next;
+        mes "\"They are fierce enemies, but you have a tame one. Use it wisely now that you can summon it in battle using incantation #dovahkiin.\"";
+        next;
+        mes "\"Farewell, young one!\"";
+        goto L_End;
+
+    L_End:
+        close;
+}
+
+0-111.gat,105,27,0|script|#DragonSpell#111|127
+{
+    end; // this NPC will do nothing until called with areatimer
+    OnSet:
+        set DragonSummonParty, getcharid(1); // store the party ID
+        specialeffect FX_MAGIC_BLUE_TELEPORT;
+        end;
+        //setskill SKILL_SUMMONDRAGON, 1; // give the skill to the player
+}

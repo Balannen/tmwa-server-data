@@ -1,0 +1,6 @@
+// Map 0-103: South Tulimshar Indoor
+// This file is generated automatically. All manually added changes will be removed when running the Converter.
+map: 0-103
+npc: npc/0-103/_mobs.txt
+npc: npc/0-103/_warps.txt
+npc: npc/0-103/wizards.txt
