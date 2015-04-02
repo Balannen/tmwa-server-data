@@ -1499,7 +1499,14 @@
             (spawn
                 (rbox location 2)
                 caster
+<<<<<<< HEAD
                 1134
                 2
                 1
                 60000))))
+=======
+                1133
+                0
+                1
+                5000))))
+>>>>>>> origin/master
